@@ -11,7 +11,6 @@ class ItemModel(db.Model):
     )
     #One to many relationship with store
     store = db.relationship("StoreModel", back_populates="items")
-    
     #Many to Many relationship with tags, also include the secondary table which contains the relationship details.
     tags=db.relationship("TagModel",back_populates="items",secondary="item_tags")
 
