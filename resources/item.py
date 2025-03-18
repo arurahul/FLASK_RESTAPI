@@ -40,8 +40,6 @@ class Item(MethodView):
         db.session.commit() 
         return item
 
-
-
 @blp.route("/item")
 class ItemList(MethodView):
     @jwt_required()
