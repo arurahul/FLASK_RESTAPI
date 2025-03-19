@@ -61,7 +61,7 @@ class Tag(MethodView):
         )
         
 #API RELATED ITEMS WHICH ARE LINKED TO TAGS
-@blp.route("/item/<int: item_id>/tag/<int:tag_id>")
+@blp.route("/item/<int:item_id>/tag/<int:tag_id>")
 class LinkTagsToItem(MethodView):
     @blp.response(201, TagSchema)
     def post(self,item_id,tag_id):
