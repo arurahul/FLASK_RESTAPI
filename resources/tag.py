@@ -4,12 +4,12 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from db import db
 from models import TagModel, StoreModel,ItemModel
-from schemas import TagSchema,TagItemSchema
+from schemas import TagSchema,TagAndItemSchema
 
-blp=Blueprint("Tags","tags",description="Operation on tags")
+blp=Blueprint("Tags", "tags",description="Operation on tags")
 
 #API RELATED STORES WHICH ARE LINKED TO TAGS
-blp.route("/store/<int: store_id>/tag")
+@blp.route("/store/<int:store_id>/tag")
 class TagsInStore(MethodView):
     @blp.response(200, TagSchema(many=True))
     def get(self,store_id):
@@ -18,7 +18,7 @@ class TagsInStore(MethodView):
     
     @blp.arguments(TagSchema)
     @blp.response(201, TagSchema)
-    def post(self, tag_data, store_id):
+    def post(self,tag_data,store_id):
         if TagModel.query.filter(TagModel.store_id==store_id, TagModel.name==tag_data["name"]).first():
             abort(400, message="A tag with that name already exists in that store.")
         tag = TagModel(**tag_data, store_id=store_id)
@@ -61,7 +61,7 @@ class Tag(MethodView):
         )
         
 #API RELATED ITEMS WHICH ARE LINKED TO TAGS
-blp.route("/item/<int: item_id>/tag/<int: tag_id>")
+blp.route("/item/<int: item_id>/tag/<int:tag_id>")
 class LinkTagsToItem(MethodView):
     @blp.response(201, TagSchema)
     def post(self,item_id,tag_id):
@@ -79,7 +79,7 @@ class LinkTagsToItem(MethodView):
             
         return tag
 
-    @blp.response(201, TagItemSchema)
+    @blp.response(201, TagAndItemSchema)
     def delete(self,item_id,tag_id):
         item=ItemModel.query.get_or_404(item_id)
         tag=TagModel.query.get_or_404(tag_id)
