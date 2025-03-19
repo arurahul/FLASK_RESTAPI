@@ -8,14 +8,14 @@ from resources.tag import blp as TagBlueprint
 from resources.user import blp as UserBlueprint
 from blocklist import BLOCKLIST
 from db import db
-
+from dotenv import load_dotenv
 import models
 from flask_jwt_extended import JWTManager
 def create_app(db_url=None):
     
     # dunder name as arguements
     app=Flask(__name__)
-
+    load_dotenv()
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "Stores REST API"
     app.config["API_VERSION"] = "v1"
